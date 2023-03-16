@@ -4,7 +4,12 @@ import Login from "./login"
 
 export default async function Page() {
     // let x = await getData();
-    return <Login ></Login>
+    
+    return (<>
+    <h1 className="text-2xl font-bold underline">
+      Hello, Next.js!
+    </h1>
+    <Login ></Login></>)
 }
 
 
