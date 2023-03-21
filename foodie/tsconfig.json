@@ -35,7 +35,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "C:\\Users\\16048\\Desktop\\next\\foodie\\foodie\\.next/types/**/*.ts"
-, "src/app/api/auth/[...nextauth]/route.js"  ],
+, "src/app/api/auth/[...nextauth]/route.js", "src/app/login/page.js"  , "src/app/layout.js"],
   "exclude": [
     "node_modules"
   ]

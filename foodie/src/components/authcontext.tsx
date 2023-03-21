@@ -4,8 +4,8 @@ import { Session } from 'next-auth';
 import { SessionProvider } from 'next-auth/react'
 import React from 'react'
 
-export default function AuthContext({children, session} : {children: React.ReactNode, session: Session}) {
+export default function AuthContext({children} : {children: React.ReactNode}) {
   return (
-    <SessionProvider  session={session}>{children}</SessionProvider>
+    <SessionProvider>{children}</SessionProvider>
   )
 }
