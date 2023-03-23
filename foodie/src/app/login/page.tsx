@@ -15,10 +15,6 @@ export default async function Page() {
   }
 
   return (
-        // <>
-        //   Not signed in <br />
-        //   <Login></Login>
-
           <section className="h-screen">
             <div className="container h-full px-6 py-24 flex justify-center">
               <div
