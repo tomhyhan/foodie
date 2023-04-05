@@ -8,6 +8,7 @@ import { CgArrowRightO, CgArrowLeftO } from "react-icons/cg";
 import { FilePreview } from './upload.component';
 import { FcNext } from "react-icons/fc";
 import { useState } from 'react';
+import { getBaseUrl } from '@/lib/utils/getBaseUrl';
 
 
 const arrowStyles : CSSProperties = {
@@ -34,11 +35,23 @@ type ImgSlideProps = {
 }
 
 export default function ImgSlide({images}:ImgSlideProps) {
-    const [next, setNext] = useState(false);
+    const [next, setNext] = useState(true);
     const handleNextClick = () => {
         setNext(prev=>!prev)
     }
-
+    const handleImgSubmit = async () => {
+        const formData = new FormData();
+        formData.append("image", images[0])
+        formData.append("test", "test")
+        let res = await fetch(`${getBaseUrl()}/api/image`, {
+            method:"POST",
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+            body: formData,
+        });
+        console.log(await res.json())
+    }
     return (
         <div className="flex">
             <div>
@@ -78,30 +91,37 @@ export default function ImgSlide({images}:ImgSlideProps) {
                 >
                 {images.map(image => 
                     <div className="w-full h-full relative" key={image.name + Math.random()}>
-                        <Image className="w-full h-full" style={{maxHeight: "40rem"}} src={image.preview} alt='image.name' width={500} height={500}></Image>
+                        <Image className="w-full h-full" style={{maxHeight: "40rem", minHeight: "300px", minWidth: "50px"}} src={image.preview} alt='image.name' width={500} height={500}></Image>
                     </div>
                 )}
             </Carousel>
-            <div className="w-full  m-0 mt-3 font-bold text-sky-600">
+            {next? <div className="w-full  m-0 mt-3 font-bold text-sky-600">
                 <span onClick={handleNextClick}className="cursor-pointer flex justify-end items-center">Next <FcNext /></span>
-            </div>                                                  
+            </div>: <></>}                                                  
             </div>
             <div style={{
                 visibility: next? "hidden": "visible",
                 width: next? "0": "100%",
                 transition: "all 0.300s ease"
-            }} className="ml-7 mt-10">
+            }} className="mx-7 my-10">
+                {/* Description */}
                 <div className="mb-3 w-40 text-sm">
                     <label htmlFor="large-input" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
                     <textarea rows={3} id="large-input" className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 outline-none" />
                 </div>
+                {/* location */}
                 <div className="mb-3">
                     <label htmlFor="default-input" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Location</label>
                     <input type="text" id="default-input" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 outline-none" />
                 </div>
+                {/* rating */}
                 <div>
                     <label htmlFor="small-input" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Rating</label>
  
+                </div>
+                {/* submit */}
+                <div className="w-full font-bold text-sky-600 absolute right-5 bottom-5">
+                    <span onClick={handleImgSubmit}className="cursor-pointer flex justify-end items-center">Share!<FcNext /></span>
                 </div>
             </div>
         </div>

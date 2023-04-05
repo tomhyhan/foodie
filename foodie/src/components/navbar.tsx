@@ -14,7 +14,7 @@ import Upload from "./upload.component";
 
 export default function Navbar() {
    const router = useRouter();
-   let [isOpen, setIsOpen] = useState(true)
+   let [isOpen, setIsOpen] = useState(false)
 
    const handleHomeClick = () => {
       router.push("/")
