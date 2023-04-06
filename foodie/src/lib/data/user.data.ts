@@ -1,9 +1,13 @@
 import { PrismaClient } from '@prisma/client'
+import { cache } from 'react'; 
 
 const prisma = new PrismaClient()
 
-export async function findUser(user: any) {
+
+export const findUser =  cache(async(email: string) =>  {
     await prisma.$connect()
-    // @ts-ignore
-    await prisma.user.({email:user.email})
-}
+    const user = await prisma.user.findUnique({ where: {
+        email
+      },})
+    return user
+})

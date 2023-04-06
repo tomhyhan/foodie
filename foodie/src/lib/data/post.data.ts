@@ -1,16 +1,10 @@
-export interface IFile {
-    fieldname: string;
-    originalname: string;
-    encoding: string;
-    mimetype: string;
-    buffer: Buffer;
-    size: number;
-}
+import { PostData } from "./post";
+import { PrismaClient } from '@prisma/client'
 
+const prisma = new PrismaClient()
 
-export interface PostData {
-    Desciption?: String;
-    imageurls: String[];
-    rate?: number;
-    location?: String;
+export async function postData(data : PostData) {
+    await prisma.$connect()
+    // @ts-ignore
+    await prisma.post.create({data})
 }

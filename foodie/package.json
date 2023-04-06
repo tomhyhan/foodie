@@ -10,6 +10,7 @@
     "migrate": "dotenv -e .env.local prisma generate"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.306.0",
     "@next-auth/prisma-adapter": "^1.0.5",
     "@prisma/client": "^4.11.0",
     "@types/node": "18.14.6",

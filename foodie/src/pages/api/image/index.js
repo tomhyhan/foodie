@@ -18,14 +18,16 @@ router.post(upload.array('images'), async (req, res) => {
 
   const session = await getServerSession(req, res, authOptions)
 
-// if not session ***
+  if (!session) {
+    res.statis(403).json("not authorized to access this content")
+  }
 
-  const user = await findUser(session)
-
+  const user = await findUser(session.user.email)
+  
   const images = req.files
-  await postImages(images)
+  console.log('here')
+  await postImages(images, user)
 
-  // return res.json({ hello: "world" });
   res.status(200).json({data: 'Hello, Response from the server'});
 })
 
