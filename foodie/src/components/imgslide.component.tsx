@@ -9,7 +9,7 @@ import { FilePreview } from './upload.component';
 import { FcNext } from "react-icons/fc";
 import { useState } from 'react';
 import { getBaseUrl } from '@/lib/utils/getBaseUrl';
-
+import { useRouter } from 'next/navigation';
 
 const arrowStyles : CSSProperties = {
     position: 'absolute',
@@ -35,23 +35,26 @@ type ImgSlideProps = {
 }
 
 export default function ImgSlide({images}:ImgSlideProps) {
+    const router = useRouter();
     const [next, setNext] = useState(true);
+
     const handleNextClick = () => {
         setNext(prev=>!prev)
     }
     const handleImgSubmit = async () => {
-        const formData = new FormData();
-        formData.append("image", images[0])
-        formData.append("test", "test")
-        let res = await fetch(`${getBaseUrl()}/api/image`, {
+        let formData = new FormData();
+        for (const image of images) {
+            formData.append("images", image)
+        }
+
+        await fetch(`${getBaseUrl()}/api/image`, {
             method:"POST",
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
             body: formData,
         });
-        console.log(await res.json())
+
+        router.push("/");
     }
+
     return (
         <div className="flex">
             <div>

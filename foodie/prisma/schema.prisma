@@ -42,6 +42,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  posts         Post[]
 }
 
 model VerificationToken {
@@ -55,8 +56,10 @@ model VerificationToken {
 
 model Post {
     id            String    @id @default(auto()) @map("_id") @db.ObjectId
-    name          String
+    Desciption    String    @default("")
     imageurls     String[]
     rate          Int       @default(0)
     location      String    @default("")
+    userId       String   @db.ObjectId
+    user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

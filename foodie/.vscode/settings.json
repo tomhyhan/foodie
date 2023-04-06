@@ -1,5 +1,5 @@
 {
+  "WillLuke.nextjs.hasPrompted": true,
   "typescript.tsdk": "node_modules\\typescript\\lib",
-  "typescript.enablePromptUseWorkspaceTsdk": true,
-  "WillLuke.nextjs.hasPrompted": true
+  "typescript.enablePromptUseWorkspaceTsdk": true
 }
