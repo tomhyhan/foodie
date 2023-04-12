@@ -28,8 +28,9 @@ export default function Navbar() {
    console.log("search clicked")
    }
    
-   const handleSignout = () => {
-      signOut()
+   const handleSignout = async () => {
+      await signOut({ redirect: false})
+      router.push("/")
    }
 
    const closeModal = () => {

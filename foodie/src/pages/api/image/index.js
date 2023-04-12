@@ -7,19 +7,26 @@ import { postImages } from '../../../lib/controllers.ts/post.controller';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from "../auth/[...nextauth]";
 import {findUser} from "../../../lib/data/user.data"
+import restricted from "../restricted";
 
 const router = createRouter()
 
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 
+// router.get(async(req, res) => {
+
+//   res.status(200).json({hello:"world1"})
+// })
+
 router.post(upload.array('images'), async (req, res) => {
   // later on add get description, rating and location 
 
   const session = await getServerSession(req, res, authOptions)
-
+  console.log("upload")
+  console.log(session)
   if (!session) {
-    res.statis(403).json("not authorized to access this content")
+    res.status(403).json("not authorized to access this content")
   }
 
   const user = await findUser(session.user.email)
