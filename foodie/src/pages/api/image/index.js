@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { createRouter } from "next-connect";
 import multer from "multer";
-import { postImages } from '../../../lib/controllers.ts/post.controller';
+import { postImages } from '../../../lib/controllers/post.controller';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from "../auth/[...nextauth]";
 import {findUser} from "../../../lib/data/user.data"
@@ -23,8 +23,7 @@ router.post(upload.array('images'), async (req, res) => {
   // later on add get description, rating and location 
 
   const session = await getServerSession(req, res, authOptions)
-  console.log("upload")
-  console.log(session)
+
   if (!session) {
     res.status(403).json("not authorized to access this content")
   }
@@ -32,10 +31,12 @@ router.post(upload.array('images'), async (req, res) => {
   const user = await findUser(session.user.email)
   
   const images = req.files
-  console.log('here')
-  await postImages(images, user)
-
-  res.status(200).json({data: 'Hello, Response from the server'});
+  try {
+    await postImages(images, user)
+    res.status(200).json({data: 'Hello, Response from the server'});
+  } catch(err) {
+    res.status(500).json({error: err});
+  }
 })
 
 

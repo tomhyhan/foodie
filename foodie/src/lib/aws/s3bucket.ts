@@ -10,27 +10,26 @@ credentials: {
 const bucketName = process.env.S3_BUCKET_NAME
 
 export async function generateSignedUrls(posts: PostData[]) {
-    const getObjectParams = {
-        Bucket: bucketName,
-        Key: posts[0].imageurls[0]
-    }
-
     const distributionDomain = process.env.AWS_DISTRIBUTION_DOMAIN;
-    const resourcePath = `/${posts[0].imageurls[0]}`;
     const privateKey = process.env.PRIVATE_KEY!
     const keyPairId = process.env.PUBLIC_KEY!
-
-   
-    const url = getSignedUrl({
-        url: `https://${distributionDomain}${resourcePath}`,
-        keyPairId: keyPairId,
-        privateKey: privateKey,
-         // @ts-ignore
-        dateLessThan: new Date( Date.now() + (1000 /*sec*/ * 10))
-    });
-    // new Date( Date.now() + (1000 /*sec*/ * 60)).toDateString()
-    console.log("url")
-    console.log(url)
+    
+    for (const post of posts) {
+        const new_imgs = [];
+        for (const imgurl of post.imageurls) {
+            const resourcePath = `/${imgurl}`;
+            const url = getSignedUrl({
+                url: `https://${distributionDomain}${resourcePath}`,
+                keyPairId: keyPairId,
+                privateKey: privateKey,
+                 // @ts-ignore
+                dateLessThan: new Date( Date.now() + (1000 /*sec*/ * 10))
+            });
+            new_imgs.push(url);
+        } 
+        post.imageurls = new_imgs
+    }
+    return posts
 }
 
 export async function postToS3bucket(imageData: ImageData[]) {
@@ -44,9 +43,8 @@ export async function postToS3bucket(imageData: ImageData[]) {
 
     try {
         await Promise.all(upLoadPromises)
-        return true
     } catch (err) {
-        return false
+        throw err;
     }
 }                   
 

@@ -1,42 +1,32 @@
 
-import React, { Component, CSSProperties } from 'react';
+import React, { Component, CSSProperties, useTransition } from 'react';
 import ReactDOM from 'react-dom';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-import { Carousel } from 'react-responsive-carousel';
-import Image from 'next/image';
-import { CgArrowRightO, CgArrowLeftO } from "react-icons/cg";
+import "react-toastify/dist/ReactToastify.css";
 import { FilePreview } from './upload.component';
 import { FcNext } from "react-icons/fc";
 import { useState } from 'react';
 import { getBaseUrl } from '@/lib/utils/getBaseUrl';
 import { useRouter } from 'next/navigation';
-
-const arrowStyles : CSSProperties = {
-    position: 'absolute',
-    zIndex: 2,
-    top: 'calc(50% - 15px)',
-    width: 30,
-    height: 30,
-    cursor: 'pointer',
-};
-
-const indicatorStyles: CSSProperties = {
-    background: 'gray',
-    opacity:0.8,
-    width: 8,
-    height: 8,
-    display: 'inline-block',
-    margin: '0 4px',
-    borderRadius: "50%"
-};
+import {networkClient} from '../../network/networkClient';
+import { ThreeDots } from 'react-loader-spinner';
+import CarouselComponent from './carousel/carousel.component';
+import { ToastContainer, toast } from 'react-toastify';
 
 type ImgSlideProps = {
     images: FilePreview[]
+    closeModal: () => void
+    onClickDeleteImages: () => void
+    notify: () => void
 }
 
-export default function ImgSlide({images}:ImgSlideProps) {
+export default function ImgSlide({images, closeModal, onClickDeleteImages, notify}:ImgSlideProps) {
     const router = useRouter();
     const [next, setNext] = useState(true);
+    const [isPending, startTransition] = useTransition();
+    const [isFetching, setIsFetching] = useState(false);
+    
+    const isMutating = isFetching || isPending;
 
     const handleNextClick = () => {
         setNext(prev=>!prev)
@@ -46,58 +36,41 @@ export default function ImgSlide({images}:ImgSlideProps) {
         for (const image of images) {
             formData.append("images", image)
         }
+        setIsFetching(true)
+        try {
+            await networkClient.fetch("/api/image", {
+                method:"POST",
+                body: formData,
+            })
+            setIsFetching(false)
+        } catch (err) {
+            notify()
+        }
+        
+        closeModal()
+        onClickDeleteImages()
+        handleNextClick()
 
-        await fetch(`${getBaseUrl()}/api/image`, {
-            method:"POST",
-            body: formData,
+        startTransition(() => {
+            router.refresh();
         });
-
-        router.push("/");
     }
-
+    if (isMutating) {
+        return <ThreeDots
+        height="80" 
+        width="80" 
+        radius="9"
+        color="#38bdf8" 
+        ariaLabel="three-dots-loading"
+        visible={true}
+        wrapperClass="flex justify-center"
+         />
+    }
+ 
     return (
         <div className="flex">
             <div>
-            <Carousel showThumbs={false} 
-            renderArrowNext={(onClickHandler: () => void, hasNext: boolean, label: string) =>
-                hasNext && (
-                    <CgArrowRightO className="hover:opacity-50 text-stone-600" onClick={onClickHandler} style={{ ...arrowStyles, right: 15 }}></CgArrowRightO>
-                )}
-            renderArrowPrev={(onClickHandler: () => void, hasNext: boolean, label: string) =>
-                hasNext && (
-                    <CgArrowLeftO className="hover:opacity-50 text-stone-600" onClick={onClickHandler} style={{ ...arrowStyles, left: 15 }}></CgArrowLeftO>
-                    )}
-            renderIndicator={(onClickHandler, isSelected, index, label) => {
-                if (isSelected) {
-                    return (
-                        <li
-                            style={{ ...indicatorStyles, backgroundColor:"rgb(56 189 248)"}}
-                            aria-label={`Selected: ${label} ${index + 1}`}
-                            title={`Selected: ${label} ${index + 1}`}
-                        />
-                    );
-                }
-                return (
-                    <li
-                        style={indicatorStyles}
-                        onClick={onClickHandler}
-                        onKeyDown={onClickHandler}
-                        value={index}
-                        key={index}
-                        role="button"
-                        tabIndex={0}
-                        title={`${label} ${index + 1}`}
-                        aria-label={`${label} ${index + 1}`}
-                    />
-                );
-            }}
-                >
-                {images.map(image => 
-                    <div className="w-full h-full relative" key={image.name + Math.random()}>
-                        <Image className="w-full h-full" style={{maxHeight: "40rem", minHeight: "300px", minWidth: "50px"}} src={image.preview} alt='image.name' width={500} height={500}></Image>
-                    </div>
-                )}
-            </Carousel>
+            <CarouselComponent images={images} />
             {next? <div className="w-full  m-0 mt-3 font-bold text-sky-600">
                 <span onClick={handleNextClick}className="cursor-pointer flex justify-end items-center">Next <FcNext /></span>
             </div>: <></>}                                                  
@@ -127,6 +100,8 @@ export default function ImgSlide({images}:ImgSlideProps) {
                     <span onClick={handleImgSubmit}className="cursor-pointer flex justify-end items-center">Share!<FcNext /></span>
                 </div>
             </div>
+            
         </div>
+        
     );
 }

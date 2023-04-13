@@ -3,6 +3,7 @@ import { Fragment, useState, useEffect } from 'react'
 import {useDropzone} from 'react-dropzone';
 import ImgSlide from './imgslide.component';
 import UploadUi from './uploadui.component';
+import { ToastContainer, toast } from 'react-toastify';
 
 type UploadProps = {
     isOpen: boolean,
@@ -15,7 +16,11 @@ export interface FilePreview extends File {
 
 export default function Upload({isOpen, closeModal}: UploadProps) {
     const [images, setImages] = useState<FilePreview[]>([]);
-    const [next, setNext] = useState<boolean>(false)
+    // const [next, setNext] = useState<boolean>(false)
+
+    const handleDeleteImages = () => {
+      setImages([])
+    }
 
     const {getRootProps, getInputProps} = useDropzone({
       accept: {
@@ -29,6 +34,18 @@ export default function Upload({isOpen, closeModal}: UploadProps) {
       multiple: true
     });
 
+    const notify = () => {
+      toast.error('Oops! Something went wrong. Please try again', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
+    } 
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>
@@ -61,11 +78,10 @@ export default function Upload({isOpen, closeModal}: UploadProps) {
               >
                 <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all mb-0 pb-0" >
                 { images.length > 0 ? 
-                  <ImgSlide images={images}></ImgSlide>
+                  <ImgSlide images={images} closeModal={closeModal} onClickDeleteImages={handleDeleteImages} notify={notify}></ImgSlide>
                   : 
                   <UploadUi getRootProps={getRootProps}
                   getInputProps={getInputProps}></UploadUi>
-
                 }
                   <div className="mt-4">
 
@@ -75,7 +91,7 @@ export default function Upload({isOpen, closeModal}: UploadProps) {
             </div>
           </div>
         </Dialog>
-      </Transition>
+      </Transition>      
     </>
   )
 }

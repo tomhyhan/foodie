@@ -7,31 +7,29 @@ import { generateImgName } from "../utils/imgName";
 import { resize } from "../utils/resizeImg";
 
 
-export async function getImages(email: string) {
+export async function getImages(email: string) : Promise<PostData[]>  {
     const posts = await getPostData(email)
-    const signedUrls = await generateSignedUrls(posts!)
+    const signedPosts = await generateSignedUrls(posts!)
+    return signedPosts
 }
 
 export async function postImages(images: IFile[],user: User) {
-
-
     // resize images
     const imageData: ImageData[] = [];
     for (const image of images) {
         const buffer = await resize(image)  
         const name = await generateImgName()
-        console.log(name)
         imageData.push({buffer,name})
     }
 
-    // console.log(imageData)
-
-
     // save to AWS S3 bucket
-    await postToS3bucket(imageData);
-
+    try {
+        await postToS3bucket(imageData);
+    } catch(err){
+        throw err
+    }
     // save to Mongo
-    const data : PostData= {
+    const data: PostData = {
         imageurls: imageData.map((img) => img.name),
         user: {
             connect: {
@@ -40,6 +38,9 @@ export async function postImages(images: IFile[],user: User) {
         }
     }
 
-    await postData(data)
-    return
+    try {
+        await postData(data)
+    } catch(err) {
+        throw err
+    }
 }

@@ -1,5 +1,5 @@
 import { PostData } from "./post";
-import { prisma } from "./prisma";
+import { prisma } from "../../../db/prisma";
 import { findUser } from "./user.data";
 
 
@@ -17,9 +17,7 @@ export async function getPostData(email : string) : Promise<PostData[]|null> {
     },
     )
     if (!user) {
-        return null
+        throw new Error("usr does not exist")
     }
-    console.log("user data")
-    console.log(user.posts)
     return user.posts
 }
