@@ -7,10 +7,14 @@ import { generateImgName } from "../utils/imgName";
 import { resize } from "../utils/resizeImg";
 
 
-export async function getImages(email: string) : Promise<PostData[]>  {
-    const posts = await getPostData(email)
-    const signedPosts = await generateSignedUrls(posts!)
-    return signedPosts
+export async function getImages(email: string, page : number) : Promise<PostData[]>  {
+    try {
+        const posts = await getPostData(email, page)
+        const signedPosts = await generateSignedUrls(posts!)
+        return signedPosts
+    } catch (err){
+        throw err
+    }
 }
 
 export async function postImages(images: IFile[],user: User) {

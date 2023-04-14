@@ -8,16 +8,19 @@ export async function postData(data : PostData) {
     await prisma.post.create({data})
 }
 
-export async function getPostData(email : string) : Promise<PostData[]|null> {
-    const user = await prisma.user.findUnique({
-        where : {email},
-        include: {
-            posts: true,
-          },
-    },
-    )
-    if (!user) {
-        throw new Error("usr does not exist")
+export async function getPostData(email : string, page: number) : Promise<PostData[]|null> {
+    try {
+        const posts = await prisma.post.findMany({
+            where: {user:{email}},
+            orderBy: {
+                createdAt: "desc"
+            },
+            skip: (page - 1) * 15,
+            take: 15,
+    
+        })
+        return posts
+    } catch (err) {
+        throw err
     }
-    return user.posts
 }

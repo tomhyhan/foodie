@@ -1,5 +1,5 @@
 
-import React, { Component, CSSProperties, useTransition } from 'react';
+import React, { useTransition } from 'react';
 import ReactDOM from 'react-dom';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import "react-toastify/dist/ReactToastify.css";
@@ -8,10 +8,9 @@ import { FcNext } from "react-icons/fc";
 import { useState } from 'react';
 import { getBaseUrl } from '@/lib/utils/getBaseUrl';
 import { useRouter } from 'next/navigation';
-import {networkClient} from '../../network/networkClient';
+import {clientPost} from '../lib/network/networkClient';
 import { ThreeDots } from 'react-loader-spinner';
 import CarouselComponent from './carousel/carousel.component';
-import { ToastContainer, toast } from 'react-toastify';
 
 type ImgSlideProps = {
     images: FilePreview[]
@@ -38,7 +37,7 @@ export default function ImgSlide({images, closeModal, onClickDeleteImages, notif
         }
         setIsFetching(true)
         try {
-            await networkClient.fetch("/api/image", {
+            await clientPost("/api/image", {
                 method:"POST",
                 body: formData,
             })

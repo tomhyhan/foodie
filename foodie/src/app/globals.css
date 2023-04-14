@@ -103,15 +103,11 @@ a {
   }
 }
 
-.test {
-  background-color: red;
-}
-
-.test {
+/* .test {
 	perspective: 1300px;
-}
+} */
 
-.test div {
+/* .test div {
 	transform-style: preserve-3d;
 }
 
@@ -123,4 +119,4 @@ a {
 @keyframes popUp  {
 	0% { }
 	70% { -webkit-transform: scale(1.1); opacity: .8; -webkit-animation-timing-function: ease-out; }
-	100% { -webkit-transform: scale(1); opacity: 1; }}
+	100% { -webkit-transform: scale(1); opacity: 1; }} */

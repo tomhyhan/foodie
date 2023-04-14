@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { createRouter } from "next-connect";
 import multer from "multer";
-import { postImages } from '../../../lib/controllers/post.controller';
+import { getImages, postImages } from '../../../lib/controllers/post.controller';
 import { getServerSession } from 'next-auth/next';
 import { authOptions } from "../auth/[...nextauth]";
 import {findUser} from "../../../lib/data/user.data"
@@ -14,10 +14,16 @@ const router = createRouter()
 const storage = multer.memoryStorage()
 const upload = multer({ storage: storage })
 
-// router.get(async(req, res) => {
-
-//   res.status(200).json({hello:"world1"})
-// })
+router.get(restricted, async(req, res) => {
+  const page = req.query['page'] || 1
+  try {
+    await getImages(req.user, page)
+    res.status(200).json({hello:"world1"})
+  } catch (err) {
+    console.error(`/api/image get result in ${err}`);
+    res.status(500).json({error:"Fail to fetch posts"})
+  }
+})
 
 router.post(upload.array('images'), async (req, res) => {
   // later on add get description, rating and location 
@@ -68,3 +74,5 @@ export const config = {
 //       bodyParser: false,
 //     },
 //   }
+
+

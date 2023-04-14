@@ -18,14 +18,18 @@ export async function generateSignedUrls(posts: PostData[]) {
         const new_imgs = [];
         for (const imgurl of post.imageurls) {
             const resourcePath = `/${imgurl}`;
-            const url = getSignedUrl({
-                url: `https://${distributionDomain}${resourcePath}`,
-                keyPairId: keyPairId,
-                privateKey: privateKey,
-                 // @ts-ignore
-                dateLessThan: new Date( Date.now() + (1000 /*sec*/ * 10))
-            });
-            new_imgs.push(url);
+            try {
+                const url = getSignedUrl({
+                    url: `https://${distributionDomain}${resourcePath}`,
+                    keyPairId: keyPairId,
+                    privateKey: privateKey,
+                     // @ts-ignore
+                    dateLessThan: new Date( Date.now() + (1000 /*sec*/ * 10))
+                });
+                new_imgs.push(url);
+            } catch (err) {
+                throw err
+            }
         } 
         post.imageurls = new_imgs
     }
