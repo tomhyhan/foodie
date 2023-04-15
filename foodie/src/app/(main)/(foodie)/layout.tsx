@@ -5,8 +5,8 @@ import { getServerSession, Session } from 'next-auth';
 import { getImages } from "@/lib/controllers/post.controller";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { redirect } from "next/navigation";
-import logger from "pino";
-
+import logger from "@/logger/logger";
+ 
 // todos
 // 1. complete server side pagination (15)
 // 2. display images on foodie route
@@ -18,15 +18,56 @@ import logger from "pino";
 //      - route
 
 // fix this
-const logger1 = logger();
 
-async function fetchImgUrls(session:Session): Promise<PostData[]> {
-    const res = await getImages(session.user!.email!, 1);
-    return res
- }
- //  w-full aspect-square mb-6 scale-50 animate-card-glow
- //  w-full aspect-video mb-6 scale-50 animate-card-glow
+function getRandomHeight(min: number, max:number) {
+      const result =  Math.random() * (max - min) + min
+      logger.info(`height = ${Math.floor(result)}`)
+      return Math.floor(result) 
+}
 
+
+// async function fetchImgUrls(session:Session): Promise<PostData[]> {
+//     const res = await getImages(session.user!.email!, 1);
+//     return res
+//  }
+// // scale-50 animate-card-glow
+const posts = [
+      {
+             imageurls: ["https://picsum.photos/200/300"]
+      },
+      {
+             imageurls: ["https://picsum.photos/200/300"]
+      },
+      {
+             imageurls: ["https://picsum.photos/200/300"]
+      },
+      {
+             imageurls: ["https://picsum.photos/200/300"]
+      },
+      {
+             imageurls: ["https://picsum.photos/200/300"]
+      },
+      {
+             imageurls: ["https://picsum.photos/200/300"]
+      },
+      {
+             imageurls: ["https://picsum.photos/200/300"]
+      },
+      {
+             imageurls: ["https://picsum.photos/200/300"]
+      },
+      {
+             imageurls: ["https://picsum.photos/200/300"]
+      },
+      {
+             imageurls: ["https://picsum.photos/200/300"]
+      },
+      {
+             imageurls: ["https://picsum.photos/200/300"]
+      },
+]
+const oddClassName = "w-full  mb-6"
+const evenClassName = "w-full  mb-6"
  
 export default async function FoodieLayout({
     children, // will be a page or nested layout
@@ -38,61 +79,31 @@ export default async function FoodieLayout({
         redirect('/login')
     }
 
-    const posts = await fetchImgUrls(session)
-    logger1.info("foodie layout")
-    logger1.info(posts)
+//     const posts = await fetchImgUrls(session)
+//     logger.info("foodie layout")
+//     logger.info(posts)
 
     return (
          <div className="p-4 sm:ml-64">
-      {/* {posts.map((post) => 
-      <div key={post.imageurls[0]}>
-         <Image src={post.imageurls[0]} width={300} height={300} alt={"test"}></Image>
+                <Mansory breakpointCols={3}>
+                    <div>efefef</div>
+                {/* {posts.map((post, idx) => 
+                    {
+                        logger.info(post)
+                        return (
+                            // <Image key={post.imageurls[0]} className="rounded-lg h-full w-full" src={post.imageurls[0]} width={100} height={100} alt="food image"></Image>
+                            <div>asdf</div>
+                            )
+                    }
+                    )}     */}
+                </Mansory>
+            {children}
       </div>
-      )} */}
-     
-     <div className="columns-2 md:columns-3 lg:columns-4">
-        <div className="w-full aspect-video mb-6 scale-50 animate-card-glow">
-              <Image className="h-auto rounded-lg " src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image.jpg" width="300" height="300" alt="" />
-        </div>
-        <div className="w-full aspect-square mb-6 scale-50 animate-card-glow">
-              <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-1.jpg" width="300" height="300" alt="" />
-        </div>
-        <div className="w-full aspect-video mb-6 scale-50  animate-card-glow">
-              <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-2.jpg" width="300" height="300" alt="" />
-        </div>
-        <div className="w-full aspect-square mb-6  animate-card-glow">
-              <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-3.jpg" width="300" height="300" alt="" />
-        </div>
-        <div className="w-full aspect-video mb-6">
-              <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-4.jpg" width="300" height="300" alt="" />
-        </div >
-        <div className="w-full aspect-square mb-6">
-              <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-5.jpg" width="300" height="300" alt="" />
-        </div>
-        <div className="w-full aspect-video mb-6">
-              <Image className="h-auto rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image.jpg" width="300" height="300" alt="" />
-        </div>
-        <div className="w-full aspect-square mb-6">
-              <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-1.jpg" width="300" height="300" alt="" />
-        </div>
-        <div className="w-full aspect-video mb-6">
-              <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-2.jpg" width="300" height="300" alt="" />
-        </div>
-        <div className="w-full aspect-square mb-6">
-              <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-3.jpg" width="300" height="300" alt="" />
-        </div>
-        <div className="w-full aspect-video mb-6">
-              <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-4.jpg" width="300" height="300" alt="" />
-        </div >
-        <div className="w-full aspect-square mb-6">
-              <Image className="h-auto max-w-full rounded-lg" src="https://flowbite.s3.amazonaws.com/docs/gallery/masonry/image-5.jpg" width="300" height="300" alt="" />
-        </div>
-  </div> 
-  {children}
-     </div>
      
   
     );
   }
 
 
+//   <div key={post.imageurls[0]} className="flex-shrink flex-grow-0 w-56" style={{height: `${getRandomHeight(150, 550)}px`, lineHeight:`${getRandomHeight(150, 550)}px`}}>
+//   </div>

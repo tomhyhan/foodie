@@ -65,7 +65,6 @@ export const config = {
 // export async function POST(request: NextRequest) {
 //     // @ts-ignore
 //     let data = await request.json()
-//     console.log(data)
 //     return NextResponse.json({data: 'Hello, Response from the server'})
 // }
 
