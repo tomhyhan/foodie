@@ -16,7 +16,6 @@ export interface FilePreview extends File {
 
 export default function Upload({isOpen, closeModal}: UploadProps) {
     const [images, setImages] = useState<FilePreview[]>([]);
-    // const [next, setNext] = useState<boolean>(false)
 
     const handleDeleteImages = () => {
       setImages([])
@@ -83,9 +82,9 @@ export default function Upload({isOpen, closeModal}: UploadProps) {
                   <UploadUi getRootProps={getRootProps}
                   getInputProps={getInputProps}></UploadUi>
                 }
-                  <div className="mt-4">
+                  {/* <div className="mt-4">
 
-                  </div>
+                  </div> */}
                 </Dialog.Panel>
               </Transition.Child>
             </div>

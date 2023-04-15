@@ -6,7 +6,9 @@ import { getImages } from "@/lib/controllers/post.controller";
 import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { redirect } from "next/navigation";
 import logger from "@/logger/logger";
- 
+import Masonry from 'react-masonry-css'
+import Display from "@/components/display/display.component";
+
 // todos
 // 1. complete server side pagination (15)
 // 2. display images on foodie route
@@ -50,21 +52,6 @@ const posts = [
       {
              imageurls: ["https://picsum.photos/200/300"]
       },
-      {
-             imageurls: ["https://picsum.photos/200/300"]
-      },
-      {
-             imageurls: ["https://picsum.photos/200/300"]
-      },
-      {
-             imageurls: ["https://picsum.photos/200/300"]
-      },
-      {
-             imageurls: ["https://picsum.photos/200/300"]
-      },
-      {
-             imageurls: ["https://picsum.photos/200/300"]
-      },
 ]
 const oddClassName = "w-full  mb-6"
 const evenClassName = "w-full  mb-6"
@@ -85,18 +72,20 @@ export default async function FoodieLayout({
 
     return (
          <div className="p-4 sm:ml-64">
-                <Mansory breakpointCols={3}>
-                    <div>efefef</div>
-                {/* {posts.map((post, idx) => 
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 justify-between" id="scroll-trigger" >
+                {posts.map((post, idx) => 
                     {
                         logger.info(post)
                         return (
-                            // <Image key={post.imageurls[0]} className="rounded-lg h-full w-full" src={post.imageurls[0]} width={100} height={100} alt="food image"></Image>
-                            <div>asdf</div>
+                            <div className="h-72" >
+                                <Image key={post.imageurls[0]} className="rounded-lg w-full h-full" src={post.imageurls[0]} width={100} height={100} alt="food image"></Image>
+                            </div>
                             )
                     }
-                    )}     */}
-                </Mansory>
+                    )}    
+            <Display />
+            </div>
+            <div ></div>
             {children}
       </div>
      
@@ -107,3 +96,10 @@ export default async function FoodieLayout({
 
 //   <div key={post.imageurls[0]} className="flex-shrink flex-grow-0 w-56" style={{height: `${getRandomHeight(150, 550)}px`, lineHeight:`${getRandomHeight(150, 550)}px`}}>
 //   </div>
+
+const breakpointColumnsObj = {
+    default: 4,
+    1100: 3,
+    700: 2,
+    500: 1
+  };

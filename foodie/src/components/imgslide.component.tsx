@@ -67,7 +67,7 @@ export default function ImgSlide({images, closeModal, onClickDeleteImages, notif
     }
  
     return (
-        <div className="flex">
+        <div className="flex mb-5">
             <div>
             <CarouselComponent images={images} />
             {next? <div className="w-full  m-0 mt-3 font-bold text-sky-600">
@@ -77,10 +77,11 @@ export default function ImgSlide({images, closeModal, onClickDeleteImages, notif
             <div style={{
                 visibility: next? "hidden": "visible",
                 width: next? "0": "100%",
+                margin: next? "0": "0 0.7rem 0.7rem 0.7rem",
                 transition: "all 0.300s ease"
-            }} className="mx-7 my-10">
+            }} className="">
                 {/* Description */}
-                <div className="mb-3 w-40 text-sm">
+                <div className="mb-3 w-100 text-sm">
                     <label htmlFor="large-input" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
                     <textarea rows={3} id="large-input" className="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 outline-none" />
                 </div>
@@ -99,7 +100,6 @@ export default function ImgSlide({images, closeModal, onClickDeleteImages, notif
                     <span onClick={handleImgSubmit}className="cursor-pointer flex justify-end items-center">Share!<FcNext /></span>
                 </div>
             </div>
-            
         </div>
         
     );

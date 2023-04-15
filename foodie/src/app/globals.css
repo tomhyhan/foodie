@@ -103,20 +103,12 @@ a {
   }
 }
 
-/* .test {
-	perspective: 1300px;
-} */
 
-/* .test div {
-	transform-style: preserve-3d;
+.monsory-container {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(250px,1fr));
+    grid-auto-rows: 220px;
 }
 
-.test div.animate {
-	transform: scale(0.4);
-	animation: popUp .8s ease-in-out forwards;
-}
 
-@keyframes popUp  {
-	0% { }
-	70% { -webkit-transform: scale(1.1); opacity: .8; -webkit-animation-timing-function: ease-out; }
-	100% { -webkit-transform: scale(1); opacity: 1; }} */
