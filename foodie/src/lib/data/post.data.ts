@@ -15,8 +15,8 @@ export async function getPostData(email : string, page: number) : Promise<PostDa
             orderBy: {
                 createdAt: "desc"
             },
-            skip: (page - 1) * 15,
-            take: 15,
+            skip: (page - 1) * 3,
+            take: 3,
     
         })
         return posts

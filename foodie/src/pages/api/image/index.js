@@ -17,8 +17,10 @@ const upload = multer({ storage: storage })
 router.get(restricted, async(req, res) => {
   const page = req.query['page'] || 1
   try {
-    await getImages(req.user, page)
-    res.status(200).json({hello:"world1"})
+    let posts = await getImages(req.user, page)
+    console.log("get request!")
+    console.log(posts)
+    res.status(200).json(posts)
   } catch (err) {
     console.error(`/api/image get result in ${err}`);
     res.status(500).json({error:"Fail to fetch posts"})

@@ -8,6 +8,7 @@ import { redirect } from "next/navigation";
 import logger from "@/logger/logger";
 import Masonry from 'react-masonry-css'
 import Display from "@/components/display/display.component";
+import Link from "next/link";
 
 // todos
 // 1. complete server side pagination (15)
@@ -28,12 +29,30 @@ function getRandomHeight(min: number, max:number) {
 }
 
 
-// async function fetchImgUrls(session:Session): Promise<PostData[]> {
-//     const res = await getImages(session.user!.email!, 1);
-//     return res
-//  }
+async function fetchImgUrls(session:Session): Promise<PostData[]> {
+    const res = await getImages(session.user!.email!, 1);
+    return res
+ }
 // // scale-50 animate-card-glow
 const posts = [
+      {
+             imageurls: ["https://picsum.photos/200/300"]
+      },
+      {
+             imageurls: ["https://picsum.photos/200/300"]
+      },
+      {
+             imageurls: ["https://picsum.photos/200/300"]
+      },
+      {
+             imageurls: ["https://picsum.photos/200/300"]
+      },
+      {
+             imageurls: ["https://picsum.photos/200/300"]
+      },
+      {
+             imageurls: ["https://picsum.photos/200/300"]
+      },
       {
              imageurls: ["https://picsum.photos/200/300"]
       },
@@ -66,30 +85,27 @@ export default async function FoodieLayout({
         redirect('/login')
     }
 
-//     const posts = await fetchImgUrls(session)
-//     logger.info("foodie layout")
-//     logger.info(posts)
+    // const tests = await fetchImgUrls(session)
+    // logger.info("foodie layout")
+    // logger.info(tests)
 
     return (
          <div className="p-4 sm:ml-64">
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 justify-between" id="scroll-trigger" >
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 justify-between"  >
                 {posts.map((post, idx) => 
                     {
-                        logger.info(post)
                         return (
-                            <div className="h-72" >
-                                <Image key={post.imageurls[0]} className="rounded-lg w-full h-full" src={post.imageurls[0]} width={100} height={100} alt="food image"></Image>
-                            </div>
+                            <Link key={idx} className="h-72" href={"/test"}>
+                                <Image className="rounded-lg w-full h-full" src={post.imageurls[0]} width={100} height={100} alt="food image" />
+                            </Link>
                             )
-                    }
+                        }
                     )}    
-            <Display />
+                <Display />
             </div>
-            <div ></div>
             {children}
-      </div>
-     
-  
+            <div className="h-4 w-full" id="scroll-trigger">scroll event</div>
+        </div>
     );
   }
 

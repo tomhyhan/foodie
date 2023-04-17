@@ -14,3 +14,6 @@ export async function clientPost(url: string, request?: RequestInit): Promise<an
 
     return data
 } 
+
+
+export const fetcher = (url :string) => fetch(url).then((res) => res.json());
