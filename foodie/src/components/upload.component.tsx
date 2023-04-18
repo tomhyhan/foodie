@@ -65,7 +65,7 @@ export default function Upload({isOpen, closeModal}: UploadProps) {
           </Transition.Child>
 
           <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center">
+            <div className="flex min-h-full items-center justify-center p-4 text-center ">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out duration-300"
@@ -75,7 +75,7 @@ export default function Upload({isOpen, closeModal}: UploadProps) {
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all mb-0 pb-0" >
+                <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all mb-4 pb-2" >
                 { images.length > 0 ? 
                   <ImgSlide images={images} closeModal={closeModal} onClickDeleteImages={handleDeleteImages} notify={notify}></ImgSlide>
                   : 

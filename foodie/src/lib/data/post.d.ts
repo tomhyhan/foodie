@@ -9,6 +9,7 @@ export interface IFile {
 
 
 export interface PostData {
+    id?: string
     Desciption?: string;
     imageurls: string[];
     rate?: number;

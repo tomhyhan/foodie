@@ -15,7 +15,7 @@ export async function getPostData(email : string, page: number) : Promise<PostDa
             orderBy: {
                 createdAt: "desc"
             },
-            skip: (page - 1) * 3,
+            skip: 12 + (page - 1) * 3,
             take: 3,
     
         })
@@ -24,3 +24,20 @@ export async function getPostData(email : string, page: number) : Promise<PostDa
         throw err
     }
 }
+
+export async function getFirstPostData(email : string, page: number) : Promise<PostData[]|null> {
+    try {
+        const posts = await prisma.post.findMany({
+            where: {user:{email}},
+            orderBy: {
+                createdAt: "desc"
+            },
+            take: 12,
+    
+        })
+        return posts
+    } catch (err) {
+        throw err
+    }
+}
+

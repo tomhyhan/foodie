@@ -2,7 +2,7 @@ import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth";
 import { generateSignedUrls, postToS3bucket } from "../aws/s3bucket";
 import { IFile, ImageData, PostData } from "../data/post";
-import { getPostData, postData } from "../data/post.data";
+import { getFirstPostData, getPostData, postData } from "../data/post.data";
 import { generateImgName } from "../utils/imgName";
 import { resize } from "../utils/resizeImg";
 
@@ -16,6 +16,18 @@ export async function getImages(email: string, page : number) : Promise<PostData
         throw err
     }
 }
+
+export async function getServersideImages(email: string, page : number) : Promise<PostData[]>  {
+    try {
+        const posts = await getFirstPostData(email, page)
+        const signedPosts = await generateSignedUrls(posts!)
+        return signedPosts
+    } catch (err){
+        throw err
+    }
+}
+
+
 
 export async function postImages(images: IFile[],user: User) {
     // resize images

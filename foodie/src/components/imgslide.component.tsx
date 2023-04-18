@@ -68,7 +68,7 @@ export default function ImgSlide({images, closeModal, onClickDeleteImages, notif
  
     return (
         <div className="flex mb-5">
-            <div>
+            <div className='w-full'>
             <CarouselComponent images={images} />
             {next? <div className="w-full  m-0 mt-3 font-bold text-sky-600">
                 <span onClick={handleNextClick}className="cursor-pointer flex justify-end items-center">Next <FcNext /></span>
