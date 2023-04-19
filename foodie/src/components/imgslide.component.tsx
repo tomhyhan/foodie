@@ -4,32 +4,35 @@ import ReactDOM from 'react-dom';
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import "react-toastify/dist/ReactToastify.css";
 import { FilePreview } from './upload.component';
-import { FcNext } from "react-icons/fc";
+import { FcNext, FcRemoveImage } from "react-icons/fc";
 import { useState } from 'react';
 import { getBaseUrl } from '@/lib/utils/getBaseUrl';
 import { useRouter } from 'next/navigation';
 import {clientPost} from '../lib/network/networkClient';
 import { ThreeDots } from 'react-loader-spinner';
 import CarouselComponent from './carousel/carousel.component';
+import Alarm from './alarm/alarm.component';
 
 type ImgSlideProps = {
     images: FilePreview[]
     closeModal: () => void
     onClickDeleteImages: () => void
     notify: () => void
+    openAlarm: () => void
 }
 
-export default function ImgSlide({images, closeModal, onClickDeleteImages, notify}:ImgSlideProps) {
+export default function ImgSlide({images, closeModal, onClickDeleteImages, notify, openAlarm}:ImgSlideProps) {
     const router = useRouter();
     const [next, setNext] = useState(true);
     const [isPending, startTransition] = useTransition();
     const [isFetching, setIsFetching] = useState(false);
-    
+
     const isMutating = isFetching || isPending;
 
     const handleNextClick = () => {
         setNext(prev=>!prev)
     }
+
     const handleImgSubmit = async () => {
         let formData = new FormData();
         for (const image of images) {
@@ -67,7 +70,8 @@ export default function ImgSlide({images, closeModal, onClickDeleteImages, notif
     }
  
     return (
-        <div className="flex mb-5">
+        <div className="flex my-5">
+            <div className="absolute top-2 right-5 text-2xl"><FcRemoveImage onClick={openAlarm} className="cursor-pointer"/></div>
             <div className='w-full'>
             <CarouselComponent images={images} />
             {next? <div className="w-full  m-0 mt-3 font-bold text-sky-600">

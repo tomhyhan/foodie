@@ -4,21 +4,24 @@ import {useDropzone} from 'react-dropzone';
 import ImgSlide from './imgslide.component';
 import UploadUi from './uploadui.component';
 import { ToastContainer, toast } from 'react-toastify';
+import ModalSkeleton from './modalSkeleton/modalSkeleton.component';
 
 type UploadProps = {
     isOpen: boolean,
-    closeModal: () => void
+    closeModal: () => void,
+    images: FilePreview[],
+    onSetImages: (files: FilePreview[]) => void
+    onDeleteimages: () => void
+    openAlarm: () => void
 }
 
 export interface FilePreview extends File {
   preview: string
 }
 
-export default function Upload({isOpen, closeModal}: UploadProps) {
-    const [images, setImages] = useState<FilePreview[]>([]);
-
+export default function Upload({isOpen, closeModal, images, onSetImages, openAlarm, onDeleteimages}: UploadProps) {
     const handleDeleteImages = () => {
-      setImages([])
+        onDeleteimages()
     }
 
     const {getRootProps, getInputProps} = useDropzone({
@@ -26,7 +29,7 @@ export default function Upload({isOpen, closeModal}: UploadProps) {
         'image/*': []
       },
       onDrop: acceptedFiles => {
-        setImages(acceptedFiles.map(file => Object.assign(file, {
+        onSetImages(acceptedFiles.map(file => Object.assign(file, {
           preview: URL.createObjectURL(file)
         })));
       },
@@ -47,50 +50,17 @@ export default function Upload({isOpen, closeModal}: UploadProps) {
     } 
   return (
     <>
-      <Transition appear show={isOpen} as={Fragment}>
-        {/* @ts-ignore */}
-        <Dialog as="div" className="relative z-50" 
-        onClose={closeModal}
-        >
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-        <div className="fixed inset-0  bg-black bg-opacity-75" />
-          </Transition.Child>
-
-          <div className="fixed inset-0 overflow-y-auto">
-            <div className="flex min-h-full items-center justify-center p-4 text-center ">
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
-              >
-                <Dialog.Panel className="w-full max-w-xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all mb-4 pb-2" >
+        <ModalSkeleton open={isOpen} closeModal={closeModal}>
+            <>
                 { images.length > 0 ? 
-                  <ImgSlide images={images} closeModal={closeModal} onClickDeleteImages={handleDeleteImages} notify={notify}></ImgSlide>
-                  : 
-                  <UploadUi getRootProps={getRootProps}
-                  getInputProps={getInputProps}></UploadUi>
+                    <ImgSlide images={images} closeModal={closeModal} onClickDeleteImages={handleDeleteImages} notify={notify} openAlarm={openAlarm}></ImgSlide>
+                    : 
+                    <UploadUi getRootProps={getRootProps}
+                    getInputProps={getInputProps}></UploadUi>
                 }
-                  {/* <div className="mt-4">
-
-                  </div> */}
-                </Dialog.Panel>
-              </Transition.Child>
-            </div>
-          </div>
-        </Dialog>
-      </Transition>      
+            </>
+        </ModalSkeleton>
+                
     </>
   )
 }

@@ -10,36 +10,63 @@ import { signOut } from 'next-auth/react';
 import {CgProfile, CgAddR, CgLogOut, CgHome} from 'react-icons/cg';
 import {AiOutlineSearch} from 'react-icons/ai';
 import { useState } from "react";
-import Upload from "./upload.component";
+import Upload, { FilePreview } from "./upload.component";
+import Alarm from "./alarm/alarm.component";
 
 export default function Navbar() {
-   const router = useRouter();
-   let [isOpen, setIsOpen] = useState(false)
+    const router = useRouter();
+    const [images, setImages] = useState<FilePreview[]>([]);
+    let [isOpen, setIsOpen] = useState(false)
+    const [openAlarm, setOpenAlarm] = useState(false)
 
-   const handleHomeClick = () => {
-      router.push("/")
-   }
+    const handleOpenRemoveModal = () => {
+        setOpenAlarm(true)
+    }
 
-   const handleProfileClick = () => {
-      router.push("/profile")
-   }
+    const handleDeleteRemoveModal = () => {
+        setOpenAlarm(false)
+    }
 
-   const handleSearchClick = () => {
-   console.log("search clicked")
-   }
-   
-   const handleSignout = async () => {
-      await signOut({ redirect: false})
-      router.push("/")
-   }
 
-   const closeModal = () => {
-    setIsOpen(false)
-  }
+    const handleSetImages = (files :FilePreview[] ) => {
+        setImages(files)
+    }
 
-   const openModal = () => {
-    setIsOpen(true)
-  }
+    const handleDeleteImages = () => {
+        setImages(() => {
+            setIsOpen(false)
+            return []
+        })
+    }
+
+    const handleHomeClick = () => {
+        router.push("/")
+    }
+
+    const handleProfileClick = () => {
+        router.push("/profile")
+    }
+
+    const handleSearchClick = () => {
+    console.log("search clicked")
+    }
+    
+    const handleSignout = async () => {
+        await signOut({ redirect: false})
+        router.push("/")
+    }
+
+    const closeModal = () => {
+        if (images.length > 0) {
+            setOpenAlarm(true)
+            return
+        }
+        setIsOpen(false)
+    }
+
+    const openModal = () => {
+        setIsOpen(true)
+    }
    
   return (
     <aside id="logo-sidebar" className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
@@ -65,7 +92,19 @@ export default function Navbar() {
             </li>
          </ul>
       </div>
-      <Upload isOpen={isOpen} closeModal={closeModal}></Upload>
+      <Upload 
+        isOpen={isOpen} 
+        closeModal={closeModal} 
+        images={images}
+        onSetImages={handleSetImages}
+        onDeleteimages={handleDeleteImages}
+        openAlarm={handleOpenRemoveModal}
+        />
+        <Alarm 
+        openAlarm={openAlarm}
+        onClickOpen={handleOpenRemoveModal}
+        onClickClose={handleDeleteRemoveModal}
+        onDeleteImages={handleDeleteImages}/>
    </aside>
   )
 }
