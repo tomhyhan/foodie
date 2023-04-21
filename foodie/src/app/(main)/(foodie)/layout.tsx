@@ -9,6 +9,7 @@ import logger from "@/logger/logger";
 import Masonry from 'react-masonry-css'
 import Display from "@/components/display/display.component";
 import Link from "next/link";
+import { FcStackOfPhotos } from "react-icons/fc";
 
 async function fetchImgUrls(session:Session): Promise<PostData[]> {
     const res = await getServersideImages(session.user!.email!, 1);
@@ -32,15 +33,23 @@ export default async function FoodieLayout({
 
     return (
          <div className="p-4 sm:ml-64">
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 justify-between"  >
-                {posts.map((post, idx) =><>{idx==1? <Link key={post.id} className="h-72 relative" href={`/${post.id}`}>
+            {posts.length > 0 ? <> 
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 justify-between"  >
+                {posts.map((post, idx) =><>{idx==1? <Link key={post.hashed_id} className="h-72 relative" href={`/${post.hashed_id}`}>
                                 <Image className="rounded-lg w-full h-full" src={post.imageurls[0]} width={100} height={100} alt="food image" />
                                 <div className="flex hover:opacity-30 opacity-0 absolute top-0 bottom-0 left-0 right-0 bg-black text-white justify-center items-center">rating</div>
                             </Link>:<div></div>}</>)}  
-                {/* {posts.length == 12? <Display />: <></>} */}
-            </div>
+                    {/* {posts.length == 12? <Display />: <></>} */}
+                </div>
             {children}
             <div className="w-full" id="scroll-trigger" />
+            </> :
+            <div className="h-screen w-full">
+                <div className="flex h-2/3 justify-center items-center text-2xl flex-col gap-6">
+                    <FcStackOfPhotos className="text-5xl"/> 
+                    <p>Post to Share your favorite Foodie moment</p>
+                </div>
+            </div>}
         </div>
     );
   }

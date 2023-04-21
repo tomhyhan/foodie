@@ -62,5 +62,6 @@ model Post {
     location      String    @default("")
     userId        String    @db.ObjectId
     createdAt     DateTime  @default(now())
+    hashed_id     String    @unique
     user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

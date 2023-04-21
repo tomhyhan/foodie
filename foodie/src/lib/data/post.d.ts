@@ -14,6 +14,7 @@ export interface PostData {
     imageurls: string[];
     rate?: number;
     location?: string;
+    hashed_id: string;
     user?: {
         connect: {
             id: string

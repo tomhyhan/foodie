@@ -17,9 +17,19 @@ export async function getPostData(email : string, page: number) : Promise<PostDa
             },
             skip: 12 + (page - 1) * 3,
             take: 3,
-    
         })
         return posts
+    } catch (err) {
+        throw err
+    }
+}
+
+export async function getPostDataById(hashed_id: string) : Promise<PostData> {
+    try {
+        const post = await prisma.post.findUnique({
+            where: {hashed_id},
+        })
+        return post
     } catch (err) {
         throw err
     }

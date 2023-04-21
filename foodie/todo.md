@@ -4,3 +4,4 @@
 
 
 * description size fixed with overflow 
+* link to home when close the post

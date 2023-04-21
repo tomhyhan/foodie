@@ -58,8 +58,8 @@ export default function Display() {
         <>
             {posts.map((post) => {
                 return (
-                    <Link key={post.id} className="h-72 scale-50 animate-card-glow" href={"/test"}>
-                        <Image key={post.imageurls[0]} className="rounded-lg w-full h-full" src={post.imageurls[0]} width={100} height={100} alt="food image" />
+                    <Link key={post.hashed_id} className="h-72 scale-50 animate-card-glow" href={"/test"}>
+                        <Image key={post.imageurls[0]} className="rounded-lg w-full h-full" src={post.imageurls[0]} width={100} height={100} alt={post.Desciption || "food image"} />
                     </Link>
                     )
                 }

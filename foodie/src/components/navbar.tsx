@@ -56,12 +56,17 @@ export default function Navbar() {
         router.push("/")
     }
 
-    const closeModal = () => {
-        if (images.length > 0) {
-            setOpenAlarm(true)
-            return
+    const closeModal = (summit?: boolean) => {
+        if (!summit) {
+            if (images.length > 0 && summit) {
+                setOpenAlarm(true)
+                return
+            }
+            setIsOpen(false)
+        } else {
+            setIsOpen(false)
+
         }
-        setIsOpen(false)
     }
 
     const openModal = () => {

@@ -15,7 +15,7 @@ import Alarm from './alarm/alarm.component';
 
 type ImgSlideProps = {
     images: FilePreview[]
-    closeModal: () => void
+    closeModal: (summit?:boolean) => void
     onClickDeleteImages: () => void
     notify: () => void
     openAlarm: () => void
@@ -49,7 +49,7 @@ export default function ImgSlide({images, closeModal, onClickDeleteImages, notif
             notify()
         }
         
-        closeModal()
+        closeModal(true)
         onClickDeleteImages()
         handleNextClick()
 
