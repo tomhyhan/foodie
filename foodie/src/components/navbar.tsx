@@ -56,16 +56,17 @@ export default function Navbar() {
         router.push("/")
     }
 
-    const closeModal = (summit?: boolean) => {
-        if (!summit) {
-            if (images.length > 0 && summit) {
+    const closeModal = (submit?: boolean) => {
+        if (!submit) {
+            console.log(images)
+            console.log(submit)
+            if (images.length > 0) {
                 setOpenAlarm(true)
                 return
             }
             setIsOpen(false)
         } else {
             setIsOpen(false)
-
         }
     }
 
@@ -100,7 +101,7 @@ export default function Navbar() {
       <Upload 
         isOpen={isOpen} 
         closeModal={closeModal} 
-        images={images}
+        images={images} 
         onSetImages={handleSetImages}
         onDeleteimages={handleDeleteImages}
         openAlarm={handleOpenRemoveModal}

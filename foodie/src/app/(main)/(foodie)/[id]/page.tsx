@@ -24,7 +24,6 @@ async function fetchPost(id: string) {
 
 export default async function Page({params}:PageProps) {
     const {id} = params
-    
     const post = await fetchPost(id)
     
     return (

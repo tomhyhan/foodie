@@ -24,7 +24,7 @@ export async function getPostData(email : string, page: number) : Promise<PostDa
     }
 }
 
-export async function getPostDataById(hashed_id: string) : Promise<PostData> {
+export async function getPostDataById(hashed_id: string) : Promise<PostData|null> {
     try {
         const post = await prisma.post.findUnique({
             where: {hashed_id},
