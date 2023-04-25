@@ -4,12 +4,11 @@ import ModalSkeleton from "../modalSkeleton/modalSkeleton.component"
   
 type AlarmProps = {
     openAlarm: boolean,
-    onClickOpen: () => void
     onClickClose: () => void,
     onDeleteImages: () => void
 }
 
-export default function Alarm({openAlarm, onClickOpen, onClickClose, onDeleteImages} : AlarmProps) {    
+export default function Alarm({openAlarm, onClickClose, onDeleteImages} : AlarmProps) {    
     const handleDeleteImages = () => {
         onDeleteImages()
         onClickClose()

@@ -51,3 +51,13 @@ export async function getFirstPostData(email : string, page: number) : Promise<P
     }
 }
 
+export async function deletePostById(id: string) {
+    try {
+        await prisma.post.delete({
+            where: {id}
+        })
+    } catch (err) {
+        throw err
+    }
+}
+

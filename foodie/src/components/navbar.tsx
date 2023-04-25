@@ -58,8 +58,6 @@ export default function Navbar() {
 
     const closeModal = (submit?: boolean) => {
         if (!submit) {
-            console.log(images)
-            console.log(submit)
             if (images.length > 0) {
                 setOpenAlarm(true)
                 return
@@ -108,7 +106,6 @@ export default function Navbar() {
         />
         <Alarm 
         openAlarm={openAlarm}
-        onClickOpen={handleOpenRemoveModal}
         onClickClose={handleDeleteRemoveModal}
         onDeleteImages={handleDeleteImages}/>
    </aside>

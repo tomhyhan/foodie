@@ -8,6 +8,7 @@ import { getServerSession } from 'next-auth/next';
 import { authOptions } from "../auth/[...nextauth]";
 import {findUser} from "../../../lib/data/user.data"
 import restricted from "../restricted";
+import { logger } from '@/logger/logger';
 
 const router = createRouter()
 
@@ -45,6 +46,18 @@ router.post(upload.array('images'), async (req, res) => {
   } catch(err) {
     res.status(500).json({error: err});
   }
+})
+
+router.delete(restricted, async (req, res) => {
+    const id = req.query['id'] 
+    console.log(`delete request for ${id}`)
+    
+    // here
+    try {
+        res.status(200).json({data: 'Hello, Response from the server'});
+    } catch(err) {
+        res.status(500).json({error: err});
+    }
 })
 
 

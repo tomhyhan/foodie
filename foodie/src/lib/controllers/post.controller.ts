@@ -78,3 +78,10 @@ export async function postImages(images: IFile[],user: User) {
         throw err
     }
 }
+
+export async function deletePost() {
+    try {
+    } catch (err){
+        throw err
+    }
+}
