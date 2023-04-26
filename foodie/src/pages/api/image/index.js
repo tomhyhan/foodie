@@ -48,18 +48,6 @@ router.post(upload.array('images'), async (req, res) => {
   }
 })
 
-router.delete(restricted, async (req, res) => {
-    const id = req.query['id'] 
-    console.log(`delete request for ${id}`)
-    
-    // here
-    try {
-        res.status(200).json({data: 'Hello, Response from the server'});
-    } catch(err) {
-        res.status(500).json({error: err});
-    }
-})
-
 
 export default router.handler({
   onError: (err, req, res) => {

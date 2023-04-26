@@ -32,10 +32,7 @@ export default function Post({post}: PostProps) {
     const handleDeletePost = async () => {
         setLoading(true)
         try {
-            await clientPost("/api/image", {method: "DELETE",headers: {
-                'Content-Type': 'application/json'
-              }, 
-              body: JSON.stringify({id: post.id})})
+            await clientPost(`/api/image/${post.id}`, {method: "DELETE" }) 
         } catch (err) {
             console.log(err)
             toast.error('Oops! Something went wrong. Please try again', {

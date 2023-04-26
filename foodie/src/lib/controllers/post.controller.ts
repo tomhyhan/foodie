@@ -2,7 +2,7 @@ import { authOptions } from "@/pages/api/auth/[...nextauth]";
 import { getServerSession } from "next-auth";
 import { generateSignedUrl, generateSignedUrls, postToS3bucket } from "../aws/s3bucket";
 import { IFile, ImageData, PostData } from "../data/post";
-import { getFirstPostData, getPostData, getPostDataById, postData } from "../data/post.data";
+import { deletePostById, getFirstPostData, getPostData, getPostDataById, postData } from "../data/post.data";
 import { generateImgName, generatePostName } from "../utils/imgName";
 import { resize } from "../utils/resizeImg";
 
@@ -79,8 +79,9 @@ export async function postImages(images: IFile[],user: User) {
     }
 }
 
-export async function deletePost() {
+export async function deletePost(id:string) {
     try {
+        await deletePostById(id)
     } catch (err){
         throw err
     }
